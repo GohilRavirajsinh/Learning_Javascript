@@ -14,11 +14,11 @@ function Saymyname() {
     console.log("G");
     console.log("O");
     console.log("K");
-    console.log("U");
+    console.log("U");  // print 3 times
 }
 // Saymyname() // function call first time
 // Saymyname() // function call second time
-// Saymyname() // function call third time  // print 3 times
+// Saymyname() // function call third time
 
 
 // 2...............
