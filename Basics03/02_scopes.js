@@ -17,7 +17,7 @@ console.log("globel scope: ", a);
 // console.log(c);
 
 
-function one() {  // Nested Scope {}
+function one() {  // Nested function Scope {}
     const nested = "Nested Scopes Print!"
 
     function two() {
@@ -32,7 +32,7 @@ function one() {  // Nested Scope {}
 // one()
 
 
-if (true) {   // Nested Scope {}
+if (true) {   // Nested if Scope {}
     const game = "Battlegrounds Mobile India"
     if (game === "Battlegrounds Mobile India") {
         const nestifelse = "Nested If Else"
