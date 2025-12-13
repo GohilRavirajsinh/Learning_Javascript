@@ -17,6 +17,7 @@ const coding = ["js", "ruby", "Java", "python", "c++"]
 //     console.log(item, index, arr);
 // } )
 
+                    // Store in Object
 const myCoding = [
     {
         languageName: "JavaScript",
@@ -33,8 +34,18 @@ const myCoding = [
 ]
 
 myCoding.forEach( (check) => {
-    console.log(check);
-    console.log(check.languageName);
-    console.log(check.languagekey);
-    console.log(`language name is ${check.languageName} & shortkey is ${check.languagekey}`);
+    // console.log(check);
+    // console.log(check.languageName);
+    // console.log(check.languagekey);
+    // console.log(`language name is ${check.languageName} & shortkey is ${check.languagekey}`);
 })
+
+
+                    // Store in Variable
+const mycodes = ["JS", "PHP", "JAVA", "PY", "C++"]
+
+const Store = mycodes.forEach( (item) => {
+    // console.log(item);
+    return item
+} )
+// console.log(Store);  // Return Undefined
