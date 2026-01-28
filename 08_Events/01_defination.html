@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defination of Event</title>
+    <style>
+        button{
+            transition: box-shadow 0.3s ease;
+        }
+        button:hover{
+            box-shadow: -5px -5px 23px #eb00ff,
+            5px 5px 23px #00f;
+        }
+    </style>
+</head>
+<body style="background-color: #414141; color: #fff;">
+    <button>Hover Me</button>
+    <h2>Amazing Images</h2>
+    <ul id="images">
+        <li><img width="200px" id="bmw" src="Images/Bmw.jpg" alt="bmw"></li>
+        <li><img width="200px" id="gaming" src="Images/Gaming.jpeg" alt="" ></li>
+        <li><img width="200px" id="god" src="Images/God.png" alt="Mahadev Mahadev" ></li>
+        <li><img width="200px" id="peace" src="Images/Peace.jpeg" alt="" ></li>
+        <li><img width="200px" id="mitsubishi" src="Images/Mitsubishi.png" alt="" ></li>
+        <li><img width="200px" id="goku" src="Images/Goku.png" alt="" ></li>
+        <li><a style="color:white" href="https://google.com" id="google">Google</a></li>
+    </ul>
+</body>
+<script>
+    // secound method
+    // document.querySelector('#bmw').onclick = function (e) {
+    //     alert('Just Wait & Watch')
+    // }
+    // document.getElementById('goku').onclick = function (e) {
+    //     alert('Super Saiyan Unlocked!')
+    //     console.log(e) // for checking console properties in browser
+    // }
+    // document.getElementById('god').onclick = function (e) {
+    //     alert('Har Har Mahadev!')
+    // }
+    // document.querySelector('#mitsubishi').onclick = function (e) {
+    //     alert('HP = 850')
+    // }
+    // document.getElementById('peace').onclick = function (e) {
+    //     alert('Boyyy Want Peace')
+    // }
+
+    // addEventListener
+    document.getElementById('bmw').addEventListener('click', function(e) {
+        alert('Wait and See')
+        console.log(e) // for checking console properties in browser
+    }, false) // it default false, it runs like child, #EventBubbling
+    // True: is agianst of false, it runs like parent, #EventCapturing
+
+    // Learning of EVENTS into AddEventListeners
+    // type, //timestamp, defaultPrevented(default behaviour change/or stay :- like anchor tag navigation stop,etc..),
+    // target, toElement, SrcElement, currentTarget,
+    // clientX, clientY, screenX, screenY
+    // altkey, ctrlkey, shiftkey, keyCode
+
+    document.getElementById('images').addEventListener('click', function (e){
+        // console.log("Parent UL Clicked");
+    }, false) // Jiska true hoga uska pehle print hoga baki by default false rehta hai to agar dono false rahega to pehle jo click kiya vo print hoga uske bad dusra hoga like agar parent ke ander child hai or dono ka false hai or vo child ke uper print krenge to pehle child vala print hoga uske bad vo parent vala print hoga! dono true hoga to parent first hoga.
+    document.getElementById('peace').addEventListener('click', function (e){
+        console.log("Child LI Clicked");
+    // stopPropogation()
+        e.stopPropagation(); // ye parent ko call nhin karta also baki ka sab stop krta hai or jo iske function me hoga bas usi ko call krta hai
+    }, true)
+
+    // preventDefault() Use on Google Link
+    document.getElementById('google').addEventListener('click',function (e) {
+        e.preventDefault(); // stop using clicked to link and open 
+        console.log('Google Clicked') // clicked in browser
+        e.stopPropagation(); // stop printing Parent (UL)
+    }, false)
+
+    // #TASK click to remove image 
+    document.getElementById('images').addEventListener('click', function (e) {
+        // console.log(e)
+        // console.log(e.target) // it select image and remove image only not li tag so in that case li is there still and image is remove so use image's parentNode to select li
+        // console.log(e.target.parentNode); // it select parentNode, hmare case me li
+        let removeIt = e.target.parentNode
+        // removeIt.remove() // it removed images to clicked but the problem is if click on any ul or body so that removed also so in that case using #STRICKTCHECK (.tagname) Method
+
+        console.log(e.target.tagName) // tagname is show tagname, using tag name and Target specific value using IF
+        if (e.target.tagName === 'IMG') {
+            console.log(e.target.id)
+            removeIt.remove()
+        }
+    }, false)
+
+    // Ye pure Scenario me 'peace' photo me koi asar nhin pda Ye stopPropogation() Method ka kamal hai, vo vahi sunta hai jo specific usko btaya hai baki ka kuchh bhi vo nhin sunta
+    
+</script>
+</html>
