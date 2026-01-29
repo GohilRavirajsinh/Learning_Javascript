@@ -204,3 +204,64 @@ function newGame() {
 
 ```
 
+## Project 5 Unlimited Color Change
+
+```javascript
+const start = document.getElementById('start');
+const stop = document.getElementById('stop');
+const body = document.querySelector('body');
+let setIntervalId;
+
+const randomColor = function () {
+  const hex = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += hex[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+// console.log(randomColor()); // it generate random colorCode
+
+const colorChange = function () {
+  body.style.backgroundColor = randomColor();
+};
+// console.log(colorChange()); // it change color
+
+start.addEventListener('click', function () {
+  setIntervalId = setInterval(colorChange, 1000);
+  console.log('Started');
+});
+stop.addEventListener('click', function () {
+  clearInterval(setIntervalId);
+  setIntervalId = ''; // null value after clicking stop
+  console.log(setIntervalId); // see value is null or not
+  console.log('Stopped');
+});
+
+```
+
+## Project 6 PressKey & See Magic
+
+```javascript
+const insert = document.getElementById('insert');
+
+window.addEventListener('keydown', (e) => {
+  insert.innerHTML = `
+  <div class='color'>
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Keycode</th>
+      <th>Code</th>
+    </tr>
+    <tr>
+      <td>${e.key === ' ' ? 'Space' : e.key}</td>
+      <td>${e.keyCode}</td>
+      <td>${e.code}</td>
+    </tr>
+
+  </table>
+  </div>
+  `;
+});
+```
