@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-color: #212121;">
+
+</body>
+<script>
+    /** Understanding of ApiStates
+    0 UNSENT           Client has been created. open() not called yet.
+    1 OPENED           open()  has benn called.
+    2 HEADERS_RECEIVED send () has benn Called, and headers and status are available.
+    3 LOADING          Downloading; responseText holds partial data.
+    4 DONE The operation is complete.**/
+    
+    const requestUrl = 'https://api.github.com/users/GohilRavirajsinh'
+    const xhr = new XMLHttpRequest()
+    let data = null; // Store user data
+    xhr.open('GET', requestUrl)
+    xhr.onreadystatechange = function () {
+        console.log(xhr.readyState)
+        if (xhr.readyState === 4) {
+            // Parse the response when the request is complete
+            data = JSON.parse(this.responseText)
+            // console.log(data)
+            console.log(data.company)
+            tapToShow()
+        }
+    }
+    xhr.send()
+
+    function showPhoto(showPHT) {
+        const Photo = document.createElement('img');
+        Photo.setAttribute("alt", "Photo");
+        Photo.setAttribute("height", '100px')
+        Photo.setAttribute("width", '100px') // was 'weight', corrected to 'width'
+        Photo.setAttribute("src", showPHT);
+        document.body.appendChild(Photo);
+        console.log(Photo);
+    }
+
+    function showFollowers(showFLW) {
+        const Followers = document.createElement('h2');
+        Followers.innerText = showFLW;
+        document.body.appendChild(Followers);
+        console.log(Followers)
+    }
+
+    function tapToShow() {
+        const btn = document.createElement('button');
+        btn.innerText = 'Tap to Show';
+
+        // Append button to document so it exists in DOM
+        document.body.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            showPhoto(data.avatar_url);
+            showFollowers(`Followers : ${data.followers}`);
+            // if (data) {
+            //     showPhoto(data.avatar_url);
+            //     showFollowers(`Followers : ${data.followers}`);
+            // } else {
+            //     alert('Data not loaded yet!');
+            // }
+        });
+        console.log(btn);
+    }
+    
+</script>
+</html>
