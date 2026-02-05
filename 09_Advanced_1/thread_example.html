@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Threads - Practical Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            min-height: 50px;
+            font-family: monospace;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Threads - Practical Demonstration</h1>
+
+    <!-- Example 1: Blocking Main Thread -->
+    <div class="container">
+        <h2>1. Blocking Main Thread (Bad Example)</h2>
+        <p>This will freeze the UI because it runs on the main thread:</p>
+        <button onclick="blockingTask()">Run Blocking Task</button>
+        <button onclick="testUI()">Test UI Responsiveness</button>
+        <div class="output" id="blocking-output"></div>
+        <div class="warning">
+            ⚠️ Click "Test UI Responsiveness" while blocking task runs - notice it doesn't respond!
+        </div>
+    </div>
+
+    <!-- Example 2: Non-blocking with setTimeout -->
+    <div class="container">
+        <h2>2. Non-blocking with setTimeout (Better)</h2>
+        <p>This uses setTimeout to break up the work:</p>
+        <button onclick="nonBlockingTask()">Run Non-blocking Task</button>
+        <button onclick="testUI()">Test UI Responsiveness</button>
+        <div class="output" id="nonblocking-output"></div>
+    </div>
+
+    <!-- Example 3: Web Worker -->
+    <div class="container">
+        <h2>3. Web Worker (Best for Heavy Tasks)</h2>
+        <p>This runs in a separate thread and doesn't block the UI:</p>
+        <button onclick="startWorker()">Start Web Worker</button>
+        <button onclick="stopWorker()">Stop Web Worker</button>
+        <button onclick="testUI()">Test UI Responsiveness</button>
+        <div class="output" id="worker-output"></div>
+        <div class="warning">
+            ✅ Click "Test UI Responsiveness" while worker runs - notice it stays responsive!
+        </div>
+    </div>
+
+    <!-- Example 4: Event Loop Demonstration -->
+    <div class="container">
+        <h2>4. Event Loop - Execution Order</h2>
+        <p>Demonstrates how Promises (microtasks) execute before setTimeout (macrotasks):</p>
+        <button onclick="eventLoopDemo()">Run Event Loop Demo</button>
+        <div class="output" id="eventloop-output"></div>
+    </div>
+
+    <script>
+        // Example 1: Blocking Task
+        function blockingTask() {
+            const output = document.getElementById('blocking-output');
+            output.innerHTML = 'Starting blocking task...<br>';
+            
+            const start = Date.now();
+            let sum = 0;
+            // Heavy computation that blocks the main thread
+            for (let i = 0; i < 500000000; i++) {
+                sum += i;
+            }
+            const end = Date.now();
+            
+            output.innerHTML += `Task completed in ${end - start}ms<br>`;
+            output.innerHTML += `Result: ${sum}<br>`;
+            output.innerHTML += '⚠️ UI was frozen during this time!';
+        }
+
+        // Example 2: Non-blocking Task (using setTimeout)
+        function nonBlockingTask() {
+            const output = document.getElementById('nonblocking-output');
+            output.innerHTML = 'Starting non-blocking task...<br>';
+            
+            let sum = 0;
+            let iterations = 0;
+            const totalIterations = 1000000;
+            
+            function processChunk() {
+                const chunkSize = 10000;
+                for (let i = 0; i < chunkSize && iterations < totalIterations; i++) {
+                    sum += iterations;
+                    iterations++;
+                }
+                
+                if (iterations < totalIterations) {
+                    output.innerHTML = `Processing... ${iterations}/${totalIterations}<br>`;
+                    setTimeout(processChunk, 0); // Yield to event loop
+                } else {
+                    output.innerHTML += `Task completed!<br>`;
+                    output.innerHTML += `Result: ${sum}<br>`;
+                    output.innerHTML += '✅ UI remained responsive!';
+                }
+            }
+            
+            processChunk();
+        }
+
+        // Example 3: Web Worker
+        let worker = null;
+
+        function startWorker() {
+            const output = document.getElementById('worker-output');
+            
+            if (worker) {
+                output.innerHTML = 'Worker already running!';
+                return;
+            }
+
+            // Create inline worker code
+            const workerCode = `
+                self.onmessage = function(e) {
+                    const start = Date.now();
+                    let sum = 0;
+                    const iterations = 500000000;
+                    
+                    for (let i = 0; i < iterations; i++) {
+                        sum += i;
+                    }
+                    
+                    const end = Date.now();
+                    self.postMessage({
+                        result: sum,
+                        time: end - start,
+                        message: 'Task completed in worker thread!'
+                    });
+                };
+            `;
+
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            worker = new Worker(URL.createObjectURL(blob));
+
+            output.innerHTML = 'Worker started...<br>';
+            output.innerHTML += '✅ UI remains responsive!<br>';
+
+            worker.onmessage = function(e) {
+                output.innerHTML += `<br>Message from worker: ${e.data.message}<br>`;
+                output.innerHTML += `Result: ${e.data.result}<br>`;
+                output.innerHTML += `Time: ${e.data.time}ms<br>`;
+                worker = null;
+            };
+
+            worker.onerror = function(error) {
+                output.innerHTML += `Error: ${error.message}`;
+                worker = null;
+            };
+
+            worker.postMessage('start');
+        }
+
+        function stopWorker() {
+            if (worker) {
+                worker.terminate();
+                worker = null;
+                document.getElementById('worker-output').innerHTML += '<br>Worker stopped!';
+            }
+        }
+
+        // Example 4: Event Loop Demonstration
+        function eventLoopDemo() {
+            const output = document.getElementById('eventloop-output');
+            output.innerHTML = '';
+
+            console.log('1. Synchronous code');
+            output.innerHTML += '1. Synchronous code<br>';
+
+            setTimeout(() => {
+                console.log('4. setTimeout (macrotask)');
+                output.innerHTML += '4. setTimeout (macrotask)<br>';
+            }, 0);
+
+            Promise.resolve().then(() => {
+                console.log('3. Promise (microtask)');
+                output.innerHTML += '3. Promise (microtask)<br>';
+            });
+
+            console.log('2. Synchronous code');
+            output.innerHTML += '2. Synchronous code<br>';
+
+            // Explanation
+            setTimeout(() => {
+                output.innerHTML += '<br><strong>Execution Order:</strong><br>';
+                output.innerHTML += '1. Synchronous code (immediate)<br>';
+                output.innerHTML += '2. Synchronous code (immediate)<br>';
+                output.innerHTML += '3. Promise microtask (before macrotasks)<br>';
+                output.innerHTML += '4. setTimeout macrotask (after microtasks)<br>';
+            }, 100);
+        }
+
+        // Test UI Responsiveness
+        function testUI() {
+            alert('UI is responsive! ✅');
+        }
+    </script>
+</body>
+</html>
