@@ -26,8 +26,8 @@ console.log(newWord);
 console.log(newWord.trim());  // Trim
 
 const url = "https://gaming.com/game%20goku"
-console.log(url.replace('%20', '-'));    // url.Replace
-console.log(url.includes('gaming'));          // url.include
+console.log(url.replace('%20', '-'));  // url.Replace
+console.log(url.includes('gaming'));   // url.include
 
 console.log(gameName.split('-'));    // Split to convert into Array using any symbol 
 // Ex-('Battlegrounds-Mobile-India')  // Ans-[ 'Battlegrounds', 'Mobile', 'India' ]
