@@ -5,8 +5,8 @@ tinderUser.name = "Raviraj"
 tinderUser.isLoggedIn = false
 console.log(Object.keys(tinderUser));   // [ 'id', 'name', 'isLoggedIn' ]
 console.log(Object.values(tinderUser)); // [ '123abc', 'Raviraj', false ]
-console.log(tinderUser);                // { id: '123abc', name: 'Raviraj', isLoggedIn: false }
 console.log(Object.entries(tinderUser)); // [ [ 'id', '123abc' ], [ 'name', 'Raviraj' ], [ 'isLoggedIn', false ] ]
+console.log(tinderUser);                // { id: '123abc', name: 'Raviraj', isLoggedIn: false }
 console.log(tinderUser.hasOwnProperty('isLoggedIn'));  // true
 console.log(tinderUser.hasOwnProperty('isLogged'));   // false
 
