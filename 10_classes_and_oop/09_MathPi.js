@@ -20,6 +20,7 @@ const chai = {
     }
 }
 console.log(chai)
+// now check iski bhi descripor properties hai? or hai to use set kar sakte hai?
 console.log(Object.getOwnPropertyDescriptor(chai, "name"))
 /*Ans: value: 'ginger chai',
        writable: true,
