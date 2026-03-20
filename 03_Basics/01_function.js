@@ -55,22 +55,26 @@ function calculateCartPrice(val1, val2, ...num1) {  // ...num(Rest Operator) com
 }
 // console.log(calculateCartPrice(200, 300, 400, 2000))
 
+//*************************
 const User = {
-    username: "GokuGaming",
+    username: "Ravirajsinh",
     price: 199
 }
-function handleUserObject(anyobject) {
-    // console.log(`Username is ${anyobject.username} and price is ${anyobject.price}`);
+
+function handleObject(anyObject) {
+    console.log(`Username is ${anyObject.username} and Price is ${anyObject.price}`)
 }
-// handleUserObject(User) // object value call in function
+handleObject(User) // using object
 
-handleUserObject({ // Default
-    username: "DirectNew",
-    price: 999
-})
+function handleWithoutObject(anyObjectuser, anyObjectPrice) {
+    console.log(`Username is ${anyObjectuser} and Price is ${anyObjectPrice}`)
+}
+handleWithoutObject("Ravi", "199") // Without object
 
+//*************************
 const myNewArray = [200, 400, 500, 1000]
 function ArrayHandleFunction(getArray){
     return getArray[1]
 }
-console.log(ArrayHandleFunction(myNewArray))
+// console.log(ArrayHandleFunction(myNewArray))
+console.log(ArrayHandleFunction([200, 345, 599, 1000]))
