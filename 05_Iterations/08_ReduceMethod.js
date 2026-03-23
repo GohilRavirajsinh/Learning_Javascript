@@ -7,7 +7,7 @@ const sumWithInitial = myNum.reduce(function (acc, currentvalue) {
 console.log(sumWithInitial); // Ans 10
 
 // Arrow function
-const ArrowSumWithInitial = myNum.reduce((acc, currentvalue) => acc + currentvalue, 0) // Arrow is Easy
+const ArrowSumWithInitial = myNum.reduce((acc, currentvalue) => acc + currentvalue, 0) // Arrow function is Easy
 console.log(ArrowSumWithInitial);
 
 
@@ -32,4 +32,5 @@ const shoppingCart = [
 ]
 
 const PriceToPay = shoppingCart.reduce( (acc, item) => acc + item.price,0)
+
 console.log(PriceToPay);
