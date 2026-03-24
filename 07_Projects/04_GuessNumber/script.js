@@ -1,11 +1,11 @@
-let randomnumber = parseInt(Math.random() * 100 + 1);
+let randomNumber = parseInt(Math.random() * 100 + 1);
 
 const btn = document.querySelector('#subt'); // inputTypeSubmit/btn/
 const userInput = document.querySelector('#guessField');
 const guessSlot = document.querySelector('.guesses');
 const remaining = document.querySelector('.lastResult');
 const lowORHigh = document.querySelector('.lowOrHi');
-const startOver = document.querySelector('.resultParas');
+const startOver = document.querySelector('.resultParas'); // (read atlast when startOver work comes)select whole div for add element
 
 const p = document.createElement('p');
 let prevGuess = []; // for show players previous values
@@ -26,16 +26,14 @@ function validateGuess(guess) {
   // for validate numbers is into 1 0r 100 or not!
   if (isNaN(guess)) {
     alert(`please enter a valid number`);
-  } else if (guess < 1) {
-    alert(`please enter more than 1`);
-  } else if (guess > 100) {
-    alert(`please enter less than 100`);
+  } else if (guess < 1 || guess > 100) {
+    alert('Enter a number between 1 or 100');
   } else {
     prevGuess.push(guess); // for add attamp of the numbers into array
     if (numGuess === 11) {
       // check number of guesses players attempts are over or not that mean it count on >10 than users game are over
       displayGuess(guess);
-      displayMessage(`Game Over, Random number was ${randomnumber}`);
+      displayMessage(`Game Over, Random number was ${randomNumber}`);
       endGame();
     } else {
       // here the number attempt is <11 than
@@ -47,12 +45,12 @@ function validateGuess(guess) {
 
 function checkGuess(guess) {
   // for check its correct, low, high, equale..
-  if (guess === randomnumber) {
+  if (guess === randomNumber) {
     displayMessage(`You guessed it right!`);
     endGame();
-  } else if (guess < randomnumber) {
+  } else if (guess < randomNumber) {
     displayMessage(`Number is TOOOO Low!`);
-  } else if (guess > randomnumber) {
+  } else if (guess > randomNumber) {
     displayMessage(`Number is TOOOO High!`);
   }
 }
@@ -85,7 +83,7 @@ function endGame() {
 function newGame() {
   const newGameBTN = document.querySelector('#btnnewGame');
   newGameBTN.addEventListener('click', function (e) {
-    randomnumber = parseInt(Math.random() * 100 + 1);
+    randomNumber = parseInt(Math.random() * 100 + 1);
     prevGuess = []; // it reset direct
     numGuess = 1;
     guessSlot.innerHTML = '';
