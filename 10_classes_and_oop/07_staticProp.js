@@ -1,26 +1,26 @@
 class User {
-    constructor(username){
-        this.username = username
+    constructor(IGN){
+        this.IGN = IGN
     }
 
-    logMe(){
-        console.log(`The name is : ${this.username}`)
+    changeName(){
+        console.log(`In Game Name ${this.IGN}New`)
     }
 
-    static createId(){  // using static to private method
-        return `Random number generated in private field ${Math.floor(Math.random() * 1000)}`
-    }
-}
-
-const goku = new User("Goku")
-// console.log(goku.createId()) // error cuase its static method 
-
-class AnotherId extends User{
-    constructor(username, email){
-        super(username)
-        this.email = email
+    static createId(){
+        return 'uniq id ki functionality'
     }
 }
 
-const iPhone = new AnotherId("IPhone", "iphone@17.com")
-// console.log(iPhone.createId()) // error cuase its static (private)
+const Goku = new User("Goku")
+console.log(Goku.changeName())
+
+class Maps extends User {
+    constructor(mapName, size){
+        super(mapName)
+        this.size = size
+    }
+}
+
+const newMap = new Maps("Miramar")
+console.log(newMap.changeName())
